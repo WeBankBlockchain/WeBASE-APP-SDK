@@ -1,0 +1,66 @@
+group = 'com.webank.webase.app.sdk'
+version = '1.5.1'
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+repositories {
+    maven {url "http://maven.aliyun.com/nexus/content/groups/public/" }
+    mavenLocal()
+    mavenCentral()
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+dependencies {
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.67'
+    implementation 'org.apache.commons:commons-lang3:3.8.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.11.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.0'
+    implementation 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.11.0'
+    implementation 'org.projectlombok:lombok:1.18.12'
+    implementation 'org.apache.logging.log4j:log4j-api:2.13.3'
+    implementation 'org.apache.logging.log4j:log4j-core:2.13.3'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
+}
+
+clean {
+    delete 'dist'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "src/main/java"
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+jar {
+    destinationDir file("dist/v${project.version}")
+    archiveName project.name + "-" + "${project.version}" + ".jar"
+
+    manifest {
+        attributes(
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version)
+    }
+    exclude '**/*.xml'
+    
+}
