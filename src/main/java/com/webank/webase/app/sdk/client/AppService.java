@@ -1,24 +1,22 @@
 /**
  * Copyright 2014-2021 the original author or authors.
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.webank.webase.app.sdk.client;
 
+import static com.webank.webase.app.sdk.constant.SdkConstant.Api.ACCOUNT_ADD;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.ACCOUNT_LIST;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.APP_REGISTER;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.BASIC_INFO;
-import static com.webank.webase.app.sdk.constant.SdkConstant.Api.CHECK;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.CONTRACT_ADDRESS_SAVE;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.CONTRACT_SOURCE_SAVE;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.DB_INFO;
@@ -31,11 +29,14 @@ import static com.webank.webase.app.sdk.constant.SdkConstant.Api.IMPORT_PUBLICKE
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.NEW_USER;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.NODE_INFO;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.NODE_LIST;
+import static com.webank.webase.app.sdk.constant.SdkConstant.Api.PASSWORD_UPDATE;
+import static com.webank.webase.app.sdk.constant.SdkConstant.Api.ROLE_LIST;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.SDK_CERT;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.USER_INFO;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.USER_LIST;
 import com.webank.webase.app.sdk.config.AppConfig;
 import com.webank.webase.app.sdk.constant.ApiErrorEnum;
+import com.webank.webase.app.sdk.dto.req.ReqAccountAdd;
 import com.webank.webase.app.sdk.dto.req.ReqAppRegister;
 import com.webank.webase.app.sdk.dto.req.ReqContractAddressSave;
 import com.webank.webase.app.sdk.dto.req.ReqContractSourceSave;
@@ -48,12 +49,14 @@ import com.webank.webase.app.sdk.dto.req.ReqImportPem;
 import com.webank.webase.app.sdk.dto.req.ReqImportPrivateKey;
 import com.webank.webase.app.sdk.dto.req.ReqImportPublicKey;
 import com.webank.webase.app.sdk.dto.req.ReqNewUser;
+import com.webank.webase.app.sdk.dto.req.ReqPasswordUpdate;
 import com.webank.webase.app.sdk.dto.rsp.RspAccountInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspBasicInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspDbInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspFrontInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspGroupInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspNodeInfo;
+import com.webank.webase.app.sdk.dto.rsp.RspRoleInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspSdkCertInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspUserInfo;
 import com.webank.webase.app.sdk.dto.rsp.base.Response;
@@ -77,7 +80,7 @@ public class AppService {
      */
     public static void checkAppConfig(AppConfig config) {
         try {
-            String response = Http.get(config, CHECK, null);
+            String response = Http.get(config, BASIC_INFO);
             Response.checkResponse(response);
         } catch (ApiException ae) {
             throw ae;
@@ -112,6 +115,39 @@ public class AppService {
         paramMap = JacksonUtil.toMap(reqGetAccountList);
         String response = Http.get(appConfig, ACCOUNT_LIST, paramMap);
         return Response.toListAndCount(response, RspAccountInfo.class);
+    }
+
+    /**
+     * roleList.
+     * 
+     * @param appConfig
+     * @return
+     */
+    public static List<RspRoleInfo> roleList(AppConfig appConfig) {
+        String response = Http.get(appConfig, ROLE_LIST);
+        return Response.toList(response, RspRoleInfo.class);
+    }
+
+    /**
+     * accountAdd.
+     * 
+     * @param appConfig
+     * @param reqAccountAdd
+     */
+    public static RspAccountInfo accountAdd(AppConfig appConfig, ReqAccountAdd reqAccountAdd) {
+        String response = Http.post(appConfig, ACCOUNT_ADD, reqAccountAdd);
+        return Response.toObject(response, RspAccountInfo.class);
+    }
+
+    /**
+     * passwordUpdate.
+     * 
+     * @param appConfig
+     * @param reqPasswordUpdate
+     */
+    public static void passwordUpdate(AppConfig appConfig, ReqPasswordUpdate reqPasswordUpdate) {
+        String response = Http.post(appConfig, PASSWORD_UPDATE, reqPasswordUpdate);
+        Response.checkResponse(response);
     }
 
     /**

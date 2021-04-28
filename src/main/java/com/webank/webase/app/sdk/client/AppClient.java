@@ -1,22 +1,21 @@
 /**
  * Copyright 2014-2021 the original author or authors.
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.webank.webase.app.sdk.client;
 
 import com.webank.webase.app.sdk.config.AppConfig;
 import com.webank.webase.app.sdk.config.HttpConfig;
+import com.webank.webase.app.sdk.dto.req.ReqAccountAdd;
 import com.webank.webase.app.sdk.dto.req.ReqAppRegister;
 import com.webank.webase.app.sdk.dto.req.ReqContractAddressSave;
 import com.webank.webase.app.sdk.dto.req.ReqContractSourceSave;
@@ -29,12 +28,14 @@ import com.webank.webase.app.sdk.dto.req.ReqImportPem;
 import com.webank.webase.app.sdk.dto.req.ReqImportPrivateKey;
 import com.webank.webase.app.sdk.dto.req.ReqImportPublicKey;
 import com.webank.webase.app.sdk.dto.req.ReqNewUser;
+import com.webank.webase.app.sdk.dto.req.ReqPasswordUpdate;
 import com.webank.webase.app.sdk.dto.rsp.RspAccountInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspBasicInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspDbInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspFrontInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspGroupInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspNodeInfo;
+import com.webank.webase.app.sdk.dto.rsp.RspRoleInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspSdkCertInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspUserInfo;
 import com.webank.webase.app.sdk.util.http.HttpUtil;
@@ -89,6 +90,34 @@ public class AppClient {
      */
     public Pair<Long, List<RspAccountInfo>> accountList(ReqGetAccountList reqGetAccountList) {
         return AppService.accountList(appConfig, reqGetAccountList);
+    }
+
+    /**
+     * 查询角色列表.
+     * 
+     * @return
+     */
+    public List<RspRoleInfo> roleList() {
+        return AppService.roleList(appConfig);
+    }
+
+    /**
+     * 新增帐号.
+     * 
+     * @param reqAccountAdd
+     * @return
+     */
+    public RspAccountInfo accountAdd(ReqAccountAdd reqAccountAdd) {
+        return AppService.accountAdd(appConfig, reqAccountAdd);
+    }
+
+    /**
+     * 更新密码.
+     * 
+     * @param reqPasswordUpdate
+     */
+    public void passwordUpdate(ReqPasswordUpdate reqPasswordUpdate) {
+        AppService.passwordUpdate(appConfig, reqPasswordUpdate);
     }
 
     /**

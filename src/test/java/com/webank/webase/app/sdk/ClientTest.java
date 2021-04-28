@@ -2,6 +2,7 @@ package com.webank.webase.app.sdk;
 
 import com.webank.webase.app.sdk.client.AppClient;
 import com.webank.webase.app.sdk.config.HttpConfig;
+import com.webank.webase.app.sdk.dto.req.ReqAccountAdd;
 import com.webank.webase.app.sdk.dto.req.ReqAppRegister;
 import com.webank.webase.app.sdk.dto.req.ReqContractAddressSave;
 import com.webank.webase.app.sdk.dto.req.ReqContractSourceSave;
@@ -15,15 +16,18 @@ import com.webank.webase.app.sdk.dto.req.ReqImportPem;
 import com.webank.webase.app.sdk.dto.req.ReqImportPrivateKey;
 import com.webank.webase.app.sdk.dto.req.ReqImportPublicKey;
 import com.webank.webase.app.sdk.dto.req.ReqNewUser;
+import com.webank.webase.app.sdk.dto.req.ReqPasswordUpdate;
 import com.webank.webase.app.sdk.dto.rsp.RspAccountInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspBasicInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspDbInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspFrontInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspGroupInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspNodeInfo;
+import com.webank.webase.app.sdk.dto.rsp.RspRoleInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspSdkCertInfo;
 import com.webank.webase.app.sdk.dto.rsp.RspUserInfo;
 import com.webank.webase.app.sdk.util.JacksonUtil;
+import com.webank.webase.app.sdk.util.codec.Sha256Util;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,6 +41,7 @@ public class ClientTest {
     private static String url = "http://localhost:5001";
     private static String appKey = "RUPCNAsd";
     private static String appSecret = "65KiXNxUpPywVwQxM7SFsMHsKmCbpGrQ";
+    private static boolean isTransferEncrypt = true;
 
     public static String account = "admin";
     public static String userName = "alice";
@@ -50,6 +55,9 @@ public class ClientTest {
             initClient();
             appRegister();
             accountList();
+            roleList();
+            accountAdd();
+            passwordUpdate();
             basicInfo();
             groupList();
             nodeList();
@@ -75,7 +83,7 @@ public class ClientTest {
     public static void initClient() {
         // 未设置httpConfig时，默认http连接均为30s
         HttpConfig httpConfig = new HttpConfig(30, 30, 30);
-        appClient = new AppClient(url, appKey, appSecret, true, httpConfig);
+        appClient = new AppClient(url, appKey, appSecret, isTransferEncrypt, httpConfig);
         System.out.println("testInitClient:" + JacksonUtil.objToString(appClient));
     }
 
@@ -95,11 +103,38 @@ public class ClientTest {
     public static void accountList() {
         ReqGetAccountList reqGetAccountList = new ReqGetAccountList();
         reqGetAccountList.setPageNumber(1);
-        reqGetAccountList.setPageSize(2);
-        // reqGetAccountList.setAccount("admin");
+        reqGetAccountList.setPageSize(5);
         Pair<Long, List<RspAccountInfo>> resp = appClient.accountList(reqGetAccountList);
         System.out.println("accountList count:" + resp.getKey() + " list:"
                 + JacksonUtil.objToString(resp.getValue()));
+    }
+    
+    public static void roleList() {
+        List<RspRoleInfo> resp = appClient.roleList();
+        System.out.println("roleList:" + JacksonUtil.objToString(resp));
+    }
+    
+    public static void accountAdd() {
+        ReqAccountAdd reqAccountAdd = new ReqAccountAdd();
+        reqAccountAdd.setAccount("test");
+        reqAccountAdd.setAccountPwd(Sha256Util.getSha256("Abcd1234"));
+        reqAccountAdd.setRoleId(100001);
+        reqAccountAdd.setEmail("test@xxx.com");
+        RspAccountInfo resp = appClient.accountAdd(reqAccountAdd);
+        System.out.println("accountAdd:" + JacksonUtil.objToString(resp));
+    }
+    
+    public static void passwordUpdate() throws Exception {
+        try {
+            ReqPasswordUpdate req = new ReqPasswordUpdate();
+            req.setAccount("test");
+            req.setOldAccountPwd(Sha256Util.getSha256("Abcd1234"));
+            req.setNewAccountPwd(Sha256Util.getSha256("Abcd123"));
+            appClient.passwordUpdate(req);
+            System.out.println("passwordUpdate end.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void basicInfo() {

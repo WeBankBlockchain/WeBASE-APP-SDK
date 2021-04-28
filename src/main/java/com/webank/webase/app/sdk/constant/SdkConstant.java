@@ -36,6 +36,9 @@ public class SdkConstant {
         public static final String CHECK = "/WeBASE-Node-Manager/api/check";
         public static final String APP_REGISTER = "/WeBASE-Node-Manager/api/appRegister";
         public static final String ACCOUNT_LIST = "/WeBASE-Node-Manager/api/accountList";
+        public static final String ROLE_LIST = "/WeBASE-Node-Manager/api/roleList";
+        public static final String ACCOUNT_ADD = "/WeBASE-Node-Manager/api/accountAdd";
+        public static final String PASSWORD_UPDATE = "/WeBASE-Node-Manager/api/passwordUpdate";
         public static final String BASIC_INFO = "/WeBASE-Node-Manager/api/basicInfo";
         public static final String GROUP_LIST = "/WeBASE-Node-Manager/api/groupList";
         public static final String NODE_LIST = "/WeBASE-Node-Manager/api/nodeList";
