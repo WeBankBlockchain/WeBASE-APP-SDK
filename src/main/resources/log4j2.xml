@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Configuration>
+<Configuration monitorInterval="5" status="info">
+    <!--定义日志文件 输入位置 -->
+    <Properties>
+        <Property name="logPath">./log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c{1}(%F:%L) - %m%n" />
+        </Console>
+    </Appenders>
+
+    <!--根据Logger和Root的定义写入相应的appender格式的日志 -->
+    <Loggers>
+        <!--自定义-->
+        <Root level="debug">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
