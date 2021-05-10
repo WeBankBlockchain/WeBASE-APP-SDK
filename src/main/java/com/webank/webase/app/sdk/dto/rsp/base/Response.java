@@ -64,7 +64,6 @@ public class Response {
         return Pair.of(response.totalCount, result);
     }
 
-
     public static Response checkResponse(String json) {
         Response response = JacksonUtil.toJavaObject(json, Response.class);
         if (response == null || response.failed()) {

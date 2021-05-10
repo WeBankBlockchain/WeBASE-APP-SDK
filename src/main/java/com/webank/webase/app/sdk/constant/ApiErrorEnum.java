@@ -32,7 +32,7 @@ public enum ApiErrorEnum {
 
     PROPERTY_BLANK_ERROR(2_05_101,"Init app config error, property blank."),
     CONFIG_INIT_ERROR(2_05_102,"Init app config error."),
-    CONFIG_NOT_INITIALIZED(2_05_103,"Please call initAppConfig() method first before send any request."),
+    CONFIG_NOT_INITIALIZED(2_05_103,"Please init AppConfig first before send any request."),
     ;
 
     private int code;
