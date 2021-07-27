@@ -7,8 +7,9 @@
 [![GitHub (pre-)release](https://img.shields.io/github/release/WeBankFinTech/WeBASE-APP-SDK/all.svg)](https://github.com/WeBankFinTech/WeBASE-APP-SDK/releases)
 
 ## 简介
-WeBASE-APP-SDK是应用集成SDK，提供调用WeBASE-Node-Manager的接口，方便WeBASE管理台接入第三方应用。详细介绍请查看[SDK使用说明](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE-APP-SDK/desc.html)。
+WeBASE-APP-SDK是应用集成SDK，提供调用WeBASE-Node-Manager的接口，方便WeBASE管理台接入第三方应用。文档请查看[WeBASE应用管理](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE-APP-SDK/index.html).
 
+详细介绍请查看[SDK使用说明](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE-APP-SDK/desc.html)。
 SDK的jar包已发布到maven仓库，如果需要自行构建，请参考[SDK构建](./install.md)。
 
 ## 贡献说明
