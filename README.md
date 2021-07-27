@@ -1,6 +1,5 @@
 # 应用集成SDK
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE/CONTRIBUTING.html)
-[![CodeFactor](https://www.codefactor.io/repository/github/webankfintech/WeBASE-APP-SDK/badge)](https://www.codefactor.io/repository/github/webankfintech/WeBASE-APP-SDK)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f5be085401f54e7080a654693ac260d4)](https://www.codacy.com/gh/WeBankFinTech/WeBASE-APP-SDK?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=WeBankFinTech/WeBASE-APP-SDK&amp;utm_campaign=Badge_Grade)
 [![Code Lines](https://tokei.rs/b1/github/WeBankFinTech/WeBASE-APP-SDK?category=code)](https://github.com/WeBankFinTech/WeBASE-APP-SDK)
 [![license](http://img.shields.io/badge/license-Apache%20v2-blue.svg)](http://www.apache.org/licenses/)
