@@ -1,9 +1,9 @@
 # 应用集成SDK
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE/CONTRIBUTING.html)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f5be085401f54e7080a654693ac260d4)](https://www.codacy.com/gh/WeBankFinTech/WeBASE-APP-SDK?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=WeBankFinTech/WeBASE-APP-SDK&amp;utm_campaign=Badge_Grade)
-[![Code Lines](https://tokei.rs/b1/github/WeBankFinTech/WeBASE-APP-SDK?category=code)](https://github.com/WeBankFinTech/WeBASE-APP-SDK)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f5be085401f54e7080a654693ac260d4)](https://www.codacy.com/gh/WeBankBlockchain/WeBASE-APP-SDK?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=WeBankBlockchain/WeBASE-APP-SDK&amp;utm_campaign=Badge_Grade)
+[![Code Lines](https://tokei.rs/b1/github/WeBankBlockchain/WeBASE-APP-SDK?category=code)](https://github.com/WeBankBlockchain/WeBASE-APP-SDK)
 [![license](http://img.shields.io/badge/license-Apache%20v2-blue.svg)](http://www.apache.org/licenses/)
-[![GitHub (pre-)release](https://img.shields.io/github/release/WeBankFinTech/WeBASE-APP-SDK/all.svg)](https://github.com/WeBankFinTech/WeBASE-APP-SDK/releases)
+[![GitHub (pre-)release](https://img.shields.io/github/release/WeBankBlockchain/WeBASE-APP-SDK/all.svg)](https://github.com/WeBankBlockchain/WeBASE-APP-SDK/releases)
 
 ## 简介
 WeBASE-APP-SDK是应用集成SDK，提供调用WeBASE-Node-Manager的接口，方便WeBASE管理台接入第三方应用。详情请查看文档:[WeBASE应用管理文档](https://webasedoc.readthedocs.io/zh_CN/latest/docs/WeBASE-APP-SDK/index.html).
