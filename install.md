@@ -4,7 +4,7 @@
 
 执行命令：
 ```shell
-git clone https://github.com/WeBankFinTech/WeBASE-APP-SDK.git
+git clone https://github.com/WeBankBlockchain/WeBASE-APP-SDK.git
 ```
 进入目录：
 
