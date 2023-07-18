@@ -37,10 +37,6 @@ public class AppConfig {
      * 是否加密传输
      */
     private boolean isTransferEncrypt;
-    /**
-     * 是否3.0的fisco和webase；根据此配置，兼容v2和v3的链
-     */
-    private boolean isV3Fisco = false;
 
 
     /**

@@ -83,7 +83,6 @@ public class AppService {
     public static void checkAppConfig(AppConfig appConfig) {
         try {
             List<RspGroupInfo> rspGroupInfoList = groupList(appConfig, null);
-            log.info("checkAppConfig rspGroupInfoList:{}", rspGroupInfoList);
             // 拿一个group获取是否为v3
             if (rspGroupInfoList != null && !rspGroupInfoList.isEmpty()) {
                 String groupId = rspGroupInfoList.get(0).getGroupId();
@@ -91,8 +90,8 @@ public class AppService {
                 log.info("checkAppConfig rspBasicInfo:{}", rspBasicInfo);
                 // 判断是否为3.x.x的链
                 String fiscoVersion = rspBasicInfo.getFiscoBcosVersion();
-                boolean isV3 = fiscoVersion.startsWith("3") || fiscoVersion.startsWith("V3") ||fiscoVersion.startsWith("v3");
-                appConfig.setV3Fisco(isV3);
+                // boolean isV3 = fiscoVersion.startsWith("3") || fiscoVersion.startsWith("V3") ||fiscoVersion.startsWith("v3");
+                log.info("checkAppConfig fiscoVersion? {}", fiscoVersion);
             } else {
                 log.error("group list from node-mgr is empty!");
                 throw new ApiException(ApiErrorEnum.HTTP_REQUEST_ERROR);
@@ -174,9 +173,7 @@ public class AppService {
      */
     public static RspBasicInfo basicInfo(AppConfig appConfig, String groupId) {
         Map<String, Object> paramMap = new HashMap<>();
-        if (appConfig.isV3Fisco()) {
-            paramMap.put("groupId", groupId);
-        }
+        paramMap.put("groupId", groupId);
         String response = Http.get(appConfig, BASIC_INFO, paramMap);
         return Response.toObject(response, RspBasicInfo.class);
     }
@@ -189,9 +186,7 @@ public class AppService {
      */
     public static Integer encryptType(AppConfig appConfig, String groupId) {
         Map<String, Object> paramMap = new HashMap<>();
-        if (appConfig.isV3Fisco()) {
-            paramMap.put("groupId", groupId);
-        }
+        paramMap.put("groupId", groupId);
         String response = Http.get(appConfig, ENCRYPT_TYPE, paramMap);
         return Response.toObject(response, Integer.class);
     }

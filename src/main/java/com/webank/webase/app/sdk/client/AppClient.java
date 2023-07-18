@@ -250,7 +250,7 @@ public class AppClient {
     /**
      * 导入.p12私钥.
      * 
-     * @param reqImportPem
+     * @param reqImportP12
      * @return
      */
     public RspUserInfo importP12PrivateKey(ReqImportP12 reqImportP12) {
@@ -260,7 +260,7 @@ public class AppClient {
     /**
      * 合约原文保存.
      * 
-     * @param reqContractAddressSave
+     * @param reqContractSourceSave
      * @return
      */
     public void contractSourceSave(ReqContractSourceSave reqContractSourceSave) {
@@ -270,7 +270,7 @@ public class AppClient {
     /**
      * 合约地址保存.
      * 
-     * @param reqContractSourceSave
+     * @param reqContractAddressSave
      * @return
      */
     public void contractAddressSave(ReqContractAddressSave reqContractAddressSave) {
