@@ -35,6 +35,7 @@ import static com.webank.webase.app.sdk.constant.SdkConstant.Api.ROLE_LIST;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.SDK_CERT;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.USER_INFO;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.USER_LIST;
+
 import com.webank.webase.app.sdk.config.AppConfig;
 import com.webank.webase.app.sdk.constant.ApiErrorEnum;
 import com.webank.webase.app.sdk.dto.req.ReqAccountAdd;
@@ -81,15 +82,29 @@ public class AppService {
      */
     public static void checkAppConfig(AppConfig appConfig) {
         try {
-            String response = Http.get(appConfig, GROUP_LIST, null);
-            Response.checkResponse(response);
+            List<RspGroupInfo> rspGroupInfoList = groupList(appConfig, null);
+            log.info("checkAppConfig rspGroupInfoList:{}", rspGroupInfoList);
+            // 拿一个group获取是否为v3
+            if (rspGroupInfoList != null && !rspGroupInfoList.isEmpty()) {
+                String groupId = rspGroupInfoList.get(0).getGroupId();
+                RspBasicInfo rspBasicInfo = basicInfo(appConfig, groupId);
+                log.info("checkAppConfig rspBasicInfo:{}", rspBasicInfo);
+                // 判断是否为3.x.x的链
+                String fiscoVersion = rspBasicInfo.getFiscoBcosVersion();
+                boolean isV3 = fiscoVersion.startsWith("3") || fiscoVersion.startsWith("V3") ||fiscoVersion.startsWith("v3");
+                appConfig.setV3Fisco(isV3);
+            } else {
+                log.error("group list from node-mgr is empty!");
+                throw new ApiException(ApiErrorEnum.HTTP_REQUEST_ERROR);
+            }
         } catch (ApiException ae) {
             throw ae;
         } catch (Exception e) {
-            log.error("App config:[{}:{}:{}] init error", appConfig.getNodeManagerUrl(),
+            log.error("App checkAppConfig:[{}:{}:{}] init error", appConfig.getNodeManagerUrl(),
                 appConfig.getAppKey(), appConfig.getAppSecret(), e);
             throw new ApiException(ApiErrorEnum.CONFIG_INIT_ERROR);
         }
+
     }
 
     /**
@@ -159,7 +174,9 @@ public class AppService {
      */
     public static RspBasicInfo basicInfo(AppConfig appConfig, String groupId) {
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("groupId", groupId);
+        if (appConfig.isV3Fisco()) {
+            paramMap.put("groupId", groupId);
+        }
         String response = Http.get(appConfig, BASIC_INFO, paramMap);
         return Response.toObject(response, RspBasicInfo.class);
     }
@@ -172,7 +189,9 @@ public class AppService {
      */
     public static Integer encryptType(AppConfig appConfig, String groupId) {
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("groupId", groupId);
+        if (appConfig.isV3Fisco()) {
+            paramMap.put("groupId", groupId);
+        }
         String response = Http.get(appConfig, ENCRYPT_TYPE, paramMap);
         return Response.toObject(response, Integer.class);
     }

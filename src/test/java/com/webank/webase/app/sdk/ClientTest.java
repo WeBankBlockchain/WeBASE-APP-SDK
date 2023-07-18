@@ -38,9 +38,9 @@ import org.apache.commons.lang3.tuple.Pair;
 public class ClientTest {
 
     // WeBASE-Node-Manager的url
-    private static String url = "http://localhost:5001";
-    private static String appKey = "RUPCNAsd";
-    private static String appSecret = "65KiXNxUpPywVwQxM7SFsMHsKmCbpGrQ";
+    private static String url = "http://127.0.0.1:5031";
+    private static String appKey = "Fm4JSQNK";
+    private static String appSecret = "P7a4YGPWSa8iv9xJiCmcQYTa2mFUQNpg";
     private static boolean isTransferEncrypt = true;
 
     public static String account = "admin";
@@ -165,7 +165,7 @@ public class ClientTest {
 
     public static void nodeInfo() {
         ReqGetNodeInfo reqGetNodeInfo = new ReqGetNodeInfo();
-        reqGetNodeInfo.setGroupId(1);
+        reqGetNodeInfo.setGroupId(groupId);
         reqGetNodeInfo.setNodeId("");
         RspNodeInfo resp = appClient.nodeInfo(reqGetNodeInfo);
         System.out.println("nodeInfo:" + JacksonUtil.objToString(resp));
@@ -173,7 +173,7 @@ public class ClientTest {
 
     public static void frontNodeList() {
         ReqGetNodeInfo reqGetNodeInfo = new ReqGetNodeInfo();
-        reqGetNodeInfo.setGroupId(1);
+        reqGetNodeInfo.setGroupId(groupId);
         List<RspFrontInfo> resp = appClient.frontNodeList(reqGetNodeInfo);
         System.out.println("frontNodeList list:" + JacksonUtil.objToString(resp));
     }
@@ -186,7 +186,7 @@ public class ClientTest {
     public static void newUser() {
         try {
             ReqNewUser reqNewUser = new ReqNewUser();
-            reqNewUser.setGroupId(1);
+            reqNewUser.setGroupId(groupId);
             reqNewUser.setUserName(userName);
             reqNewUser.setAccount(account);
             reqNewUser.setDescription("test");
@@ -199,7 +199,7 @@ public class ClientTest {
 
     public static void userList() {
         ReqGetUserList reqGetUserList = new ReqGetUserList();
-        reqGetUserList.setGroupId(1);
+        reqGetUserList.setGroupId(groupId);
         reqGetUserList.setAccount(account);
         Pair<Long, List<RspUserInfo>> resp = appClient.userList(reqGetUserList);
         System.out.println("userList count:" + resp.getKey() + " list:"
@@ -214,7 +214,7 @@ public class ClientTest {
     public static void importPublicKey() {
         try {
             ReqImportPublicKey reqImportPublicKey = new ReqImportPublicKey();
-            reqImportPublicKey.setGroupId(1);
+            reqImportPublicKey.setGroupId(groupId);
             reqImportPublicKey.setUserName("u2");
             reqImportPublicKey.setAccount(account);
             reqImportPublicKey.setPublicKey(
@@ -230,7 +230,7 @@ public class ClientTest {
     public static void importPrivateKey() {
         try {
             ReqImportPrivateKey reqImportPrivateKey = new ReqImportPrivateKey();
-            reqImportPrivateKey.setGroupId(1);
+            reqImportPrivateKey.setGroupId(groupId);
             reqImportPrivateKey.setUserName("u3");
             reqImportPrivateKey.setAccount(account);
             reqImportPrivateKey.setPrivateKey(
@@ -246,7 +246,7 @@ public class ClientTest {
     public static void importPemPrivateKey() {
         try {
             ReqImportPem reqImportPem = new ReqImportPem();
-            reqImportPem.setGroupId(1);
+            reqImportPem.setGroupId(groupId);
             reqImportPem.setUserName("u4");
             reqImportPem.setAccount(account);
             reqImportPem.setPemContent(
@@ -262,7 +262,7 @@ public class ClientTest {
     public static void importP12PrivateKey() {
         try {
             ReqImportP12 reqImportP12 = new ReqImportP12();
-            reqImportP12.setGroupId(1);
+            reqImportP12.setGroupId(groupId);
             reqImportP12.setUserName("u5");
             reqImportP12.setAccount(account);
             reqImportP12.setP12File("D:\\test_key_0x994dfdaed38462af6915615b6e2959db1ef3b8ad.p12");
@@ -302,7 +302,7 @@ public class ClientTest {
     public static void contractAddressSave() {
         try {
             ReqContractAddressSave reqContractAddressSave = new ReqContractAddressSave();
-            reqContractAddressSave.setGroupId(1);
+            reqContractAddressSave.setGroupId(groupId);
             reqContractAddressSave.setContractName(contractName);
             reqContractAddressSave.setContractPath("test");
             reqContractAddressSave.setContractVersion(contractVersion);
