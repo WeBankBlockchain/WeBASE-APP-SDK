@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ReqGetNodeList extends RequestForPage {
-    Integer groupId;
+    String groupId;
     String nodeId;
 }
 

@@ -1,5 +1,5 @@
 group 'com.webank'
-version = '1.5.5'
+version = '3.1.0-SNAPSHOT'
 
 apply plugin: 'maven'
 apply plugin: 'maven-publish'

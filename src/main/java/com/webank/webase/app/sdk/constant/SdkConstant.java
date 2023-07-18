@@ -40,6 +40,7 @@ public class SdkConstant {
         public static final String ACCOUNT_ADD = "/WeBASE-Node-Manager/api/accountAdd";
         public static final String PASSWORD_UPDATE = "/WeBASE-Node-Manager/api/passwordUpdate";
         public static final String BASIC_INFO = "/WeBASE-Node-Manager/api/basicInfo";
+        public static final String ENCRYPT_TYPE = "/WeBASE-Node-Manager/api/encrypt";
         public static final String GROUP_LIST = "/WeBASE-Node-Manager/api/groupList";
         public static final String NODE_LIST = "/WeBASE-Node-Manager/api/nodeList";
         public static final String NODE_INFO = "/WeBASE-Node-Manager/api/nodeInfo";

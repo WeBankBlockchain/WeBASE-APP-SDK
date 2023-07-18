@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ReqNewUser extends Request {
-    private Integer groupId;
+    private String groupId;
     private String userName;
     private String account;
     private String description;

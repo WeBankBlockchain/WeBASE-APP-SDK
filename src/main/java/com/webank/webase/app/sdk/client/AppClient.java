@@ -125,8 +125,17 @@ public class AppClient {
      * 
      * @return
      */
-    public RspBasicInfo basicInfo() {
-        return AppService.basicInfo(appConfig);
+    public RspBasicInfo basicInfo(String groupId) {
+        return AppService.basicInfo(appConfig, groupId);
+    }
+
+    /**
+     * 查询链基本信息.
+     *
+     * @return
+     */
+    public Integer encryptType(String groupId) {
+        return AppService.encryptType(appConfig, groupId);
     }
 
     /**

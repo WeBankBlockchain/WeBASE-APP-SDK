@@ -47,6 +47,7 @@ public class ClientTest {
     public static String userName = "alice";
     public static String contractVersion = "1.0.0";
     public static String contractName = "HelloWorld";
+    public static String groupId = "group0";
 
     private static AppClient appClient = null;
 
@@ -59,6 +60,7 @@ public class ClientTest {
             accountAdd();
             passwordUpdate();
             basicInfo();
+            encryptType();
             groupList();
             nodeList();
             nodeInfo();
@@ -138,8 +140,13 @@ public class ClientTest {
     }
 
     public static void basicInfo() {
-        RspBasicInfo resp = appClient.basicInfo();
+        RspBasicInfo resp = appClient.basicInfo(groupId);
         System.out.println("basicInfo:" + JacksonUtil.objToString(resp));
+    }
+
+    public static void encryptType() {
+        Integer resp = appClient.encryptType(groupId);
+        System.out.println("encryptType:" + JacksonUtil.objToString(resp));
     }
 
     public static void groupList() {

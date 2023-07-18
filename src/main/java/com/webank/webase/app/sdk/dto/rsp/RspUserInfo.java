@@ -25,7 +25,7 @@ public class RspUserInfo {
     private Integer userId;
     private String userName;
     private String account;
-    private Integer groupId;
+    private String groupId;
     private String publicKey;
     private String privateKey;
     private Integer userStatus;
