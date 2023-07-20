@@ -22,7 +22,13 @@ import lombok.Data;
 @Data
 public class RspBasicInfo {
     private Integer encryptType;
+    /**
+     * 3.0 fisco中，多个节点的 sslCryptoType 可能不一致，但是由于获取basicInfo，默认取第一个
+     */
     private Integer sslCryptoType;
+    /**
+     * 3.0 fisco中，多个节点的 binaryVersion 可能不一致，但是由于获取basicInfo，默认取第一个
+     */
     private String fiscoBcosVersion;
     private String webaseVersion;
 }

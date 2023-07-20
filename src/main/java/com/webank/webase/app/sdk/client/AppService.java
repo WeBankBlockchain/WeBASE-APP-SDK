@@ -20,6 +20,7 @@ import static com.webank.webase.app.sdk.constant.SdkConstant.Api.BASIC_INFO;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.CONTRACT_ADDRESS_SAVE;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.CONTRACT_SOURCE_SAVE;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.DB_INFO;
+import static com.webank.webase.app.sdk.constant.SdkConstant.Api.ENCRYPT_TYPE;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.FRONT_NODE_LIST;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.GROUP_LIST;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.IMPORT_P12;
@@ -34,6 +35,7 @@ import static com.webank.webase.app.sdk.constant.SdkConstant.Api.ROLE_LIST;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.SDK_CERT;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.USER_INFO;
 import static com.webank.webase.app.sdk.constant.SdkConstant.Api.USER_LIST;
+
 import com.webank.webase.app.sdk.config.AppConfig;
 import com.webank.webase.app.sdk.constant.ApiErrorEnum;
 import com.webank.webase.app.sdk.dto.req.ReqAccountAdd;
@@ -74,21 +76,34 @@ import org.apache.commons.lang3.tuple.Pair;
 public class AppService {
 
     /**
-     * check app config from node manager.
+     * check app config from node manager by group list api
      * 
-     * @param config
+     * @param appConfig
      */
-    public static void checkAppConfig(AppConfig config) {
+    public static void checkAppConfig(AppConfig appConfig) {
         try {
-            String response = Http.get(config, BASIC_INFO);
-            Response.checkResponse(response);
+            List<RspGroupInfo> rspGroupInfoList = groupList(appConfig, null);
+            // 拿一个group获取是否为v3
+            if (rspGroupInfoList != null && !rspGroupInfoList.isEmpty()) {
+                String groupId = rspGroupInfoList.get(0).getGroupId();
+                RspBasicInfo rspBasicInfo = basicInfo(appConfig, groupId);
+                log.info("checkAppConfig rspBasicInfo:{}", rspBasicInfo);
+                // 判断是否为3.x.x的链
+                String fiscoVersion = rspBasicInfo.getFiscoBcosVersion();
+                // boolean isV3 = fiscoVersion.startsWith("3") || fiscoVersion.startsWith("V3") ||fiscoVersion.startsWith("v3");
+                log.info("checkAppConfig fiscoVersion? {}", fiscoVersion);
+            } else {
+                log.error("group list from node-mgr is empty!");
+                throw new ApiException(ApiErrorEnum.HTTP_REQUEST_ERROR);
+            }
         } catch (ApiException ae) {
             throw ae;
         } catch (Exception e) {
-            log.error("App config:[{}:{}:{}] init error", config.getNodeManagerUrl(),
-                    config.getAppKey(), config.getAppSecret(), e);
+            log.error("App checkAppConfig:[{}:{}:{}] init error", appConfig.getNodeManagerUrl(),
+                appConfig.getAppKey(), appConfig.getAppSecret(), e);
             throw new ApiException(ApiErrorEnum.CONFIG_INIT_ERROR);
         }
+
     }
 
     /**
@@ -156,9 +171,24 @@ public class AppService {
      * @param appConfig
      * @return
      */
-    public static RspBasicInfo basicInfo(AppConfig appConfig) {
-        String response = Http.get(appConfig, BASIC_INFO);
+    public static RspBasicInfo basicInfo(AppConfig appConfig, String groupId) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("groupId", groupId);
+        String response = Http.get(appConfig, BASIC_INFO, paramMap);
         return Response.toObject(response, RspBasicInfo.class);
+    }
+
+    /**
+     * encryptType.
+     *
+     * @param appConfig
+     * @return
+     */
+    public static Integer encryptType(AppConfig appConfig, String groupId) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("groupId", groupId);
+        String response = Http.get(appConfig, ENCRYPT_TYPE, paramMap);
+        return Response.toObject(response, Integer.class);
     }
 
     /**
@@ -273,8 +303,7 @@ public class AppService {
      * @param appConfig
      * @param reqImportPublicKey
      */
-    public static RspUserInfo importPublicKey(AppConfig appConfig,
-            ReqImportPublicKey reqImportPublicKey) {
+    public static RspUserInfo importPublicKey(AppConfig appConfig, ReqImportPublicKey reqImportPublicKey) {
         String response = Http.post(appConfig, IMPORT_PUBLICKEY, reqImportPublicKey);
         return Response.toObject(response, RspUserInfo.class);
     }
@@ -285,8 +314,7 @@ public class AppService {
      * @param appConfig
      * @param reqImportPrivateKey
      */
-    public static RspUserInfo importPrivateKey(AppConfig appConfig,
-            ReqImportPrivateKey reqImportPrivateKey) {
+    public static RspUserInfo importPrivateKey(AppConfig appConfig, ReqImportPrivateKey reqImportPrivateKey) {
         String response = Http.post(appConfig, IMPORT_PRIVATEKEY, reqImportPrivateKey);
         return Response.toObject(response, RspUserInfo.class);
     }
@@ -306,7 +334,7 @@ public class AppService {
      * importP12PrivateKey.
      * 
      * @param appConfig
-     * @param reqImportPem
+     * @param reqImportP12
      */
     public static RspUserInfo importP12PrivateKey(AppConfig appConfig, ReqImportP12 reqImportP12) {
         Map<String, Object> paramMap = new HashMap<>();
@@ -320,7 +348,7 @@ public class AppService {
      * contractSourceSave.
      * 
      * @param appConfig
-     * @param reqContractAddressSave
+     * @param reqContractSourceSave
      */
     public static void contractSourceSave(AppConfig appConfig,
             ReqContractSourceSave reqContractSourceSave) {
@@ -332,7 +360,7 @@ public class AppService {
      * contractAddressSave.
      * 
      * @param appConfig
-     * @param reqContractSourceSave
+     * @param reqContractAddressSave
      */
     public static void contractAddressSave(AppConfig appConfig,
             ReqContractAddressSave reqContractAddressSave) {

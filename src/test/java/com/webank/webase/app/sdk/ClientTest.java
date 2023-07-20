@@ -29,6 +29,7 @@ import com.webank.webase.app.sdk.dto.rsp.RspUserInfo;
 import com.webank.webase.app.sdk.util.JacksonUtil;
 import com.webank.webase.app.sdk.util.codec.Sha256Util;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -38,15 +39,24 @@ import org.apache.commons.lang3.tuple.Pair;
 public class ClientTest {
 
     // WeBASE-Node-Manager的url
-    private static String url = "http://localhost:5001";
-    private static String appKey = "RUPCNAsd";
-    private static String appSecret = "65KiXNxUpPywVwQxM7SFsMHsKmCbpGrQ";
+    private static String appIp = "127.0.0.1";
+    private static String appPort = "5001";
+    private static String url = "http://" + appIp + ":" + appPort;
+    private static String appKey = "RutWhRCq";
+    private static String appSecret = "WUazkxkKgzaDeDtcVuVgRWG7EqqFjyWV";
+//    private static String appKey = "Fm4JSQNK";
+//    private static String appSecret = "P7a4YGPWSa8iv9xJiCmcQYTa2mFUQNpg";
     private static boolean isTransferEncrypt = true;
 
     public static String account = "admin";
-    public static String userName = "alice";
+    public static String testAccount = "test"+System.currentTimeMillis();
+    public static String userName = "alice"+System.currentTimeMillis();
+    public static Integer userId = 700001;
     public static String contractVersion = "1.0.0";
     public static String contractName = "HelloWorld";
+    public static String contractDeployedAddress = "0xcd6908e8ca5955ce3b279ed0ec33080010b6f753";
+    public static String groupId = "1";
+//    public static String groupId = "group0";
 
     private static AppClient appClient = null;
 
@@ -59,6 +69,7 @@ public class ClientTest {
             accountAdd();
             passwordUpdate();
             basicInfo();
+            encryptType();
             groupList();
             nodeList();
             nodeInfo();
@@ -90,9 +101,9 @@ public class ClientTest {
     public static void appRegister() throws Exception {
         try {
             ReqAppRegister req = new ReqAppRegister();
-            req.setAppIp("127.0.0.1");
-            req.setAppPort(5001);
-            req.setAppLink("https://127.0.0.1:5001/");
+            req.setAppIp(appIp);
+            req.setAppPort(Integer.parseInt(appPort));
+            req.setAppLink(url);
             appClient.appRegister(req);
             System.out.println("appRegister end.");
         } catch (Exception e) {
@@ -116,10 +127,10 @@ public class ClientTest {
     
     public static void accountAdd() {
         ReqAccountAdd reqAccountAdd = new ReqAccountAdd();
-        reqAccountAdd.setAccount("test");
+        reqAccountAdd.setAccount(testAccount);
         reqAccountAdd.setAccountPwd(Sha256Util.getSha256("Abcd1234"));
         reqAccountAdd.setRoleId(100001);
-        reqAccountAdd.setEmail("test@xxx.com");
+        reqAccountAdd.setEmail(testAccount+"@xxx.com");
         RspAccountInfo resp = appClient.accountAdd(reqAccountAdd);
         System.out.println("accountAdd:" + JacksonUtil.objToString(resp));
     }
@@ -127,7 +138,7 @@ public class ClientTest {
     public static void passwordUpdate() throws Exception {
         try {
             ReqPasswordUpdate req = new ReqPasswordUpdate();
-            req.setAccount("test");
+            req.setAccount(testAccount);
             req.setOldAccountPwd(Sha256Util.getSha256("Abcd1234"));
             req.setNewAccountPwd(Sha256Util.getSha256("Abcd123"));
             appClient.passwordUpdate(req);
@@ -138,8 +149,13 @@ public class ClientTest {
     }
 
     public static void basicInfo() {
-        RspBasicInfo resp = appClient.basicInfo();
+        RspBasicInfo resp = appClient.basicInfo(groupId);
         System.out.println("basicInfo:" + JacksonUtil.objToString(resp));
+    }
+
+    public static void encryptType() {
+        Integer resp = appClient.encryptType(groupId);
+        System.out.println("encryptType:" + JacksonUtil.objToString(resp));
     }
 
     public static void groupList() {
@@ -150,7 +166,7 @@ public class ClientTest {
     public static void nodeList() {
         ReqGetNodeList reqGetNodeList = new ReqGetNodeList();
         reqGetNodeList.setPageNumber(1);
-        reqGetNodeList.setPageSize(2);
+        reqGetNodeList.setPageSize(5);
         Pair<Long, List<RspNodeInfo>> resp = appClient.nodeList(reqGetNodeList);
         System.out.println("nodeList count:" + resp.getKey() + " list:"
                 + JacksonUtil.objToString(resp.getValue()));
@@ -158,7 +174,7 @@ public class ClientTest {
 
     public static void nodeInfo() {
         ReqGetNodeInfo reqGetNodeInfo = new ReqGetNodeInfo();
-        reqGetNodeInfo.setGroupId(1);
+        reqGetNodeInfo.setGroupId(groupId);
         reqGetNodeInfo.setNodeId("");
         RspNodeInfo resp = appClient.nodeInfo(reqGetNodeInfo);
         System.out.println("nodeInfo:" + JacksonUtil.objToString(resp));
@@ -166,7 +182,7 @@ public class ClientTest {
 
     public static void frontNodeList() {
         ReqGetNodeInfo reqGetNodeInfo = new ReqGetNodeInfo();
-        reqGetNodeInfo.setGroupId(1);
+        reqGetNodeInfo.setGroupId(groupId);
         List<RspFrontInfo> resp = appClient.frontNodeList(reqGetNodeInfo);
         System.out.println("frontNodeList list:" + JacksonUtil.objToString(resp));
     }
@@ -179,10 +195,10 @@ public class ClientTest {
     public static void newUser() {
         try {
             ReqNewUser reqNewUser = new ReqNewUser();
-            reqNewUser.setGroupId(1);
+            reqNewUser.setGroupId(groupId);
             reqNewUser.setUserName(userName);
             reqNewUser.setAccount(account);
-            reqNewUser.setDescription("test");
+            reqNewUser.setDescription(testAccount);
             RspUserInfo resp = appClient.newUser(reqNewUser);
             System.out.println("newUser:" + JacksonUtil.objToString(resp));
         } catch (Exception e) {
@@ -192,23 +208,24 @@ public class ClientTest {
 
     public static void userList() {
         ReqGetUserList reqGetUserList = new ReqGetUserList();
-        reqGetUserList.setGroupId(1);
+        reqGetUserList.setGroupId(groupId);
         reqGetUserList.setAccount(account);
         Pair<Long, List<RspUserInfo>> resp = appClient.userList(reqGetUserList);
         System.out.println("userList count:" + resp.getKey() + " list:"
                 + JacksonUtil.objToString(resp.getValue()));
+        userId = resp.getValue().get(0).getUserId();
     }
 
     public static void userInfo() {
-        RspUserInfo resp = appClient.userInfo(1);
+        RspUserInfo resp = appClient.userInfo(userId);
         System.out.println("userInfo:" + JacksonUtil.objToString(resp));
     }
 
     public static void importPublicKey() {
         try {
             ReqImportPublicKey reqImportPublicKey = new ReqImportPublicKey();
-            reqImportPublicKey.setGroupId(1);
-            reqImportPublicKey.setUserName("u2");
+            reqImportPublicKey.setGroupId(groupId);
+            reqImportPublicKey.setUserName(testAccount.substring(0,8)+"_2");
             reqImportPublicKey.setAccount(account);
             reqImportPublicKey.setPublicKey(
                     "0x98c4e9896dfa062c7555ede0f1509bda90668902ee9a3b382a3941869d3d69026ece966e1afe9f9de41c2e762750dee8d7df47439b3340a22cd620e2f6975ef8");
@@ -223,8 +240,8 @@ public class ClientTest {
     public static void importPrivateKey() {
         try {
             ReqImportPrivateKey reqImportPrivateKey = new ReqImportPrivateKey();
-            reqImportPrivateKey.setGroupId(1);
-            reqImportPrivateKey.setUserName("u3");
+            reqImportPrivateKey.setGroupId(groupId);
+            reqImportPrivateKey.setUserName(testAccount.substring(0,8)+"_3");
             reqImportPrivateKey.setAccount(account);
             reqImportPrivateKey.setPrivateKey(
                     "Yjk4YzM3Y2EzNTMxMzNiOWI2MWUwOTMxODhmOTk2NTc2MGYxMTBhMTljNTI2MmY3NTczMDVkNThlOGM3ZWNlMA==");
@@ -239,8 +256,8 @@ public class ClientTest {
     public static void importPemPrivateKey() {
         try {
             ReqImportPem reqImportPem = new ReqImportPem();
-            reqImportPem.setGroupId(1);
-            reqImportPem.setUserName("u4");
+            reqImportPem.setGroupId(groupId);
+            reqImportPem.setUserName(testAccount.substring(0,8)+"_4");
             reqImportPem.setAccount(account);
             reqImportPem.setPemContent(
                     "-----BEGIN PRIVATE KEY-----\nMIGEAgEAMBAGByqGSM49AgEGBSuBBAAKBG0wawIBAQQgC8TbvFSMA9y3CghFt51/\nXmExewlioX99veYHOV7dTvOhRANCAASZtMhCTcaedNP+H7iljbTIqXOFM6qm5aVs\nfM/yuDBK2MRfFbfnOYVTNKyOSnmkY+xBfCR8Q86wcsQm9NZpkmFK\n-----END PRIVATE KEY-----\n");
@@ -255,10 +272,11 @@ public class ClientTest {
     public static void importP12PrivateKey() {
         try {
             ReqImportP12 reqImportP12 = new ReqImportP12();
-            reqImportP12.setGroupId(1);
-            reqImportP12.setUserName("u5");
+            reqImportP12.setGroupId(groupId);
+            reqImportP12.setUserName(testAccount.substring(0,8)+"_5");
             reqImportP12.setAccount(account);
-            reqImportP12.setP12File("D:\\test_key_0x994dfdaed38462af6915615b6e2959db1ef3b8ad.p12");
+            reqImportP12.setP12File("D:\\projects\\v1.5.5&v3.0.2\\v1.5.5\\WeBASE-APP-SDK\\src\\test\\resources\\ttt_key_0x16d6bc1c98c1e5bb93380cc782a406ea8d5f4ba0.p12");
+            reqImportP12.setP12Password(Base64.getEncoder().encodeToString("123".getBytes()));
             reqImportP12.setDescription("test");
             RspUserInfo resp = appClient.importP12PrivateKey(reqImportP12);
             System.out.println("importP12PrivateKey:" + JacksonUtil.objToString(resp));
@@ -295,11 +313,11 @@ public class ClientTest {
     public static void contractAddressSave() {
         try {
             ReqContractAddressSave reqContractAddressSave = new ReqContractAddressSave();
-            reqContractAddressSave.setGroupId(1);
+            reqContractAddressSave.setGroupId(groupId);
             reqContractAddressSave.setContractName(contractName);
-            reqContractAddressSave.setContractPath("test");
+            reqContractAddressSave.setContractPath(testAccount);
             reqContractAddressSave.setContractVersion(contractVersion);
-            reqContractAddressSave.setContractAddress("0x072d9db9e8fa914b7638feb8c3d49ef8fd8258c9");
+            reqContractAddressSave.setContractAddress(contractDeployedAddress);
             appClient.contractAddressSave(reqContractAddressSave);
             System.out.println("contractAddressSave end.");
         } catch (Exception e) {

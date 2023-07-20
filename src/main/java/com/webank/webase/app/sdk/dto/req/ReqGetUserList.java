@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ReqGetUserList extends RequestForPage {
-    Integer groupId;
+    String groupId;
     String account;
     String userParam;
     Integer hasPrivateKey;

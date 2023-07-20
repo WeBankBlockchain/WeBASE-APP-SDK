@@ -23,7 +23,7 @@ import lombok.Data;
 @Data
 public class RspGroupInfo {
 
-    private Integer groupId;
+    private String groupId;
     private String groupName;
     private Integer groupStatus;
     private Integer nodeCount;

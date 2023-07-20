@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ReqContractAddressSave extends Request {
-    private Integer groupId;
+    private String groupId;
     private String contractName;
     private String contractPath;
     private String contractVersion;

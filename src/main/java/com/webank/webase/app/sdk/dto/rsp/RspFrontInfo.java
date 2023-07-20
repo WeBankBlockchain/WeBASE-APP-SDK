@@ -28,7 +28,7 @@ public class RspFrontInfo {
     private String frontIp;
     private Integer frontPort;
     private String agency;
-    private List<Integer> groupList;
+    private List<String> groupList;
     /**
      * node version and support version
      */
